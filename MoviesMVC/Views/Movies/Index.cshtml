@@ -1,10 +1,10 @@
 ﻿@model MoviesMVC.Models.MovieGenreViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Movies";
 }
 
-<h1>Index</h1>
+<h1 class="text-center text-decoration-underline mb-5">Your Movies</h1>
 
 <form asp-controller="Movies" asp-action="Index" method="get">
     <p>
@@ -12,8 +12,12 @@
             <option value="">All</option>
         </select>
 
-        <label>Title: <input type="text" asp-for="SearchString" /></label>
-        <input type="submit" value="Filter" />
+        <label class="ms-2">Title: <input type="text" asp-for="SearchString" /></label>
+     
+        <button type="submit" class="border-1 fw-bold">Filter
+            <img src="/img/filter-icon.jpg" />
+        </button>
+
     </p>
 </form>
 <table class="table">
@@ -34,6 +38,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Movies![0].Rating)
             </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -60,6 +65,11 @@
                 <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
+            <td>
+                <img id="star-@item.Id"
+                             src="@(item.Favorited ? "/img/filled-star.png" : "/img/empty-star.png")"
+                             onclick="toggleStar(@item.Id)" />
+            </td>
         </tr>
      }
     </tbody>
@@ -69,9 +79,36 @@
     <p>
         <a class="btn btn-success" asp-action="Create">Create New</a>
     </p>
-    <p class="text-decoration-underline fs-6 fw-bolder mt-3">Total Price: @ViewData["TotalPrice"]$</p>
+    <p class="text-decoration-underline total-price fw-bolder mt-2">Total Price: @ViewData["TotalPrice"]$</p>
     <p>
         <a class="btn btn-info" asp-action="Export">Export To Excel</a>
     </p>
 </div>
+@Html.AntiForgeryToken()
+<script>
+    function toggleStar(itemId) {
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            fetch('/Movies/ToggleFavorite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token
+            },
+            body: JSON.stringify({ itemId: itemId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const star = document.getElementById('star-' + itemId);
+            star.src = data.favorited ? '/img/filled-star.png' : '/img/empty-star.png';
+            star.classList.Add('pulse');
+            setTimeout(() => {
+                star.classList.remove('pulse');
+            }, 1100);
+        });
+    }
+</script>
+    
+
+
 

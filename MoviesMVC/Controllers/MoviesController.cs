@@ -223,6 +223,22 @@ namespace MoviesMVC.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ToggleFavorite([FromBody] FavoriteDto dto)
+        {
+            var movie = _context.Movie.Find(dto.ItemId);
+            if (movie != null)
+            {
+                movie.Favorited = !movie.Favorited;
+                _context.SaveChanges();
+                return Json(new { favorited = movie?.Favorited });
+            }
+            return NotFound();
+
+
+        }
+
         private void SetRangeBorderAndAlignmentStyling(ExcelRange range)
         {
             range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
