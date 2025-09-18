@@ -41,7 +41,7 @@ namespace MoviesMVC.Controllers
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
                 Movies = await movies.ToListAsync()
             };
-
+            ViewData["TotalPrice"] = movies.Sum(m => m.Price);
             return View(movieGenreVM);
         }
 
