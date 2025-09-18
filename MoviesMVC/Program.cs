@@ -1,12 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoviesMVC.Data;
 using MoviesMVC.Models;
+using OfficeOpenXml;
 namespace MoviesMVC
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            EPPlusLicense license = new EPPlusLicense();
+            license.SetNonCommercialPersonal("mxrt0");
+
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<MoviesDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MoviesDbContext") ?? throw new InvalidOperationException("Connection string 'MoviesDbContext' not found.")));

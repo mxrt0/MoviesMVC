@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoviesMVC.Data;
 using MoviesMVC.Models;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
 
 namespace MoviesMVC.Controllers
 {
@@ -144,7 +147,6 @@ namespace MoviesMVC.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -157,6 +159,78 @@ namespace MoviesMVC.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Export()
+        {
+            var package = new ExcelPackage();
+            var sheet = package.Workbook.Worksheets.Add("Movies");
+
+            sheet.Cells[1, 1].Value = "Title";
+            sheet.Cells[1, 2].Value = "Release Date";
+            sheet.Cells[1, 3].Value = "Genre";
+            sheet.Cells[1, 4].Value = "Price ($)";
+            sheet.Cells[1, 5].Value = "Rating";
+
+            using var range = sheet.Cells[1, 1, 1, 5];
+            range.Style.Font.Bold = true;
+            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            range.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+            SetRangeBorderAndAlignmentStyling(range);
+
+            int row = 2;
+            var movies = await _context.Movie.ToListAsync();
+            foreach (var movie in movies)
+            {
+                sheet.Cells[row, 1].Value = movie.Title;
+                sheet.Cells[row, 2].Value = movie.ReleaseDate.ToString("dd-MM-yyyy");
+                sheet.Cells[row, 3].Value = movie.Genre;
+                sheet.Cells[row, 4].Value = movie.Price;
+                sheet.Cells[row, 5].Value = movie.Rating;
+
+                var fillColor = (row % 2 == 0) ? Color.White : Color.LightGray;
+                using var rowRange = sheet.Cells[row, 1, row, 5];
+                rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                rowRange.Style.Fill.BackgroundColor.SetColor(fillColor);
+                rowRange.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.AliceBlue);
+                SetRangeBorderAndAlignmentStyling(rowRange);
+                rowRange.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                row++;
+            }
+
+            using var totalPriceRange = sheet.Cells[row, 3, row, 4];
+            sheet.Cells[row, 3].Value = "Total Price:";
+            sheet.Cells[row, 4].Value = movies.Sum(m => m.Price);
+            totalPriceRange.Style.Font.Bold = true;
+            totalPriceRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            totalPriceRange.Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+            SetRangeBorderAndAlignmentStyling(totalPriceRange);
+
+            var tableRange = sheet.Cells[1, 1, row - 1, 5];
+            range.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black, true);
+            tableRange.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black, true);
+
+            sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+
+            var stream = new MemoryStream();
+            package.SaveAs(stream);
+            stream.Position = 0;
+
+            string fileName = "Movies.xlsx";
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            return File(stream, contentType, fileName);
+
+        }
+
+        private void SetRangeBorderAndAlignmentStyling(ExcelRange range)
+        {
+            range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+            range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
         }
 
         private bool MovieExists(int id)
