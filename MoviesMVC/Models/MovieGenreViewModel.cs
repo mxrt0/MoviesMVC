@@ -8,4 +8,5 @@ public class MovieGenreViewModel
     public SelectList? Genres { get; set; }
     public string? MovieGenre { get; set; }
     public string? SearchString { get; set; }
+    public bool FavoritesOnly { get; set; } = false;
 }

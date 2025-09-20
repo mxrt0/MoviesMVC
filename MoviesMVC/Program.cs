@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoviesMVC.Data;
 using MoviesMVC.Models;
+using MoviesMVC.Services;
 using OfficeOpenXml;
 namespace MoviesMVC
 {
@@ -14,6 +15,8 @@ namespace MoviesMVC
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<MoviesDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MoviesDbContext") ?? throw new InvalidOperationException("Connection string 'MoviesDbContext' not found.")));
+            builder.Services.AddScoped<RatingScraper>();
+            builder.Services.AddHttpClient<RatingScraper>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
