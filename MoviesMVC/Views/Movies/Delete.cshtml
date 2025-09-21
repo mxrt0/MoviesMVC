@@ -37,6 +37,14 @@
         </dd>
        </div>
        <div class="d-flex flex-column justify-content-between">
+        <dt class="col-sm-12">
+            Starring
+        </dt>
+        <dd class="col-sm-10">
+           @string.Join(", ", Model.Actors)
+        </dd>
+       </div>
+       <div class="d-flex flex-column justify-content-between">
         <dt class = "col-sm-12">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
@@ -50,6 +58,14 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Rating)
+        </dd>
+       </div>
+       <div class="d-flex flex-column justify-content-between">
+        <dt class="col-sm-12">
+            IMDb Rating
+        </dt>
+        <dd class="col-sm-10">
+            <span>@Model.ImdbRating</span> <img src="@Url.Content("~/img/filled-star.png")" class="img-fluid" style="width: 20px; height: 20px; margin-bottom: 4px;" />
         </dd>
        </div>
     </dl>

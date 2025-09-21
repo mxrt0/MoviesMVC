@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Movies";
 }
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div id="success-toast" class="toast align-items-center text-bg-success border-0" role="alert">
@@ -51,22 +52,101 @@ else
         <thead class="table-light">
             <tr>
                 <th style="width: 13%;">
-                    @Html.DisplayNameFor(model => model.Movies![0].Title)
+                    <a class="sort-a" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="Title"
+                       asp-route-Descending="@(Model.CurrentSort == "Title" && !Model.SortDescending ? "true" : "false")">@Html.DisplayNameFor(model => model.Movies![0].Title)
+                        @if (Model.CurrentSort == "Title" && !Model.SortDescending)
+                        {
+                            <img src="img/sort-asc.png" style="max-width: 20px; max-height: 20px;"/>
+                        }
+                        else if (Model.CurrentSort == "Title" && Model.SortDescending)
+                        {
+                            <img src="img/sort-desc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                    </a>
                 </th>
                 <th style="width: 10%;">
-                    @Html.DisplayNameFor(model => model.Movies![0].ReleaseDate)
+                    <a class="sort-a" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="ReleaseDate"
+                       asp-route-Descending="@(Model.CurrentSort == "ReleaseDate" && !Model.SortDescending ? "true" : "false")">
+                        @Html.DisplayNameFor(model => model.Movies![0].ReleaseDate)
+                        @if (Model.CurrentSort == "ReleaseDate" && !Model.SortDescending)
+                        {
+                            <img src="img/sort-asc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                        else if (Model.CurrentSort == "ReleaseDate" && Model.SortDescending)
+                        {
+                            <img src="img/sort-desc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                    </a>
                 </th>
-                <th style="width: 9%">
-                    @Html.DisplayNameFor(model => model.Movies![0].Genre)
+                <th style="width: 10%">
+                    <a class="sort-a" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="Genre"
+                       asp-route-Descending="@(Model.CurrentSort == "Genre" && !Model.SortDescending ? "true" : "false")">
+                        @Html.DisplayNameFor(model => model.Movies![0].Genre)
+                        @if (Model.CurrentSort == "Genre" && !Model.SortDescending)
+                        {
+                            <img src="img/sort-asc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                        else if (Model.CurrentSort == "Genre" && Model.SortDescending)
+                        {
+                            <img src="img/sort-desc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                    </a>
                 </th>
                 <th style="width: 25%">Starring</th>
                 <th style="width: 8%;">
-                    @Html.DisplayNameFor(model => model.Movies![0].Price)
+                    <a class="sort-a" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="Price"
+                       asp-route-Descending="@(Model.CurrentSort == "Price" && !Model.SortDescending ? "true" : "false")">
+                        @Html.DisplayNameFor(model => model.Movies![0].Price)
+                        @if (Model.CurrentSort == "Price" && !Model.SortDescending)
+                        {
+                            <img src="img/sort-asc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                        else if (Model.CurrentSort == "Price" && Model.SortDescending)
+                        {
+                            <img src="img/sort-desc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                    </a>
                 </th>
                 <th style="width: 8%">
-                    @Html.DisplayNameFor(model => model.Movies![0].Rating)
+                    <a class="sort-a" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="Rating"
+                       asp-route-Descending="@(Model.CurrentSort == "Rating" && !Model.SortDescending ? "true" : "false")">
+                        @Html.DisplayNameFor(model => model.Movies![0].Rating)
+                        @if (Model.CurrentSort == "Rating" && !Model.SortDescending)
+                        {
+                            <img src="img/sort-asc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                        else if (Model.CurrentSort == "Rating" && Model.SortDescending)
+                        {
+                            <img src="img/sort-desc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                    </a>
                 </th>
-                <th style="width: 10%;">IMDb Rating</th>
+                <th style="width: 10%;">
+                    <a class="sort-a" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="ImdbRating"
+                       asp-route-Descending="@(Model.CurrentSort == "ImdbRating" && !Model.SortDescending ? "true" : "false")">
+                        @Html.DisplayNameFor(model => model.Movies![0].ImdbRating)
+                        @if (Model.CurrentSort == "ImdbRating" && !Model.SortDescending)
+                        {
+                            <img src="img/sort-asc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                        else if (Model.CurrentSort == "ImdbRating" && Model.SortDescending)
+                        {
+                            <img src="img/sort-desc.png" style="max-width: 20px; max-height: 20px;" />
+                        }
+                    </a>
+                </th>
                 <th style="width: 23%">Actions</th>
                 <th style="width: 8%;"></th>
             </tr>
@@ -81,7 +161,7 @@ else
                     <td style="max-width: 30px;">
                         @Html.DisplayFor(modelItem => item.ReleaseDate)
                     </td>
-                    <td style="max-width: 40px;">
+                    <td>
                         @Html.DisplayFor(modelItem => item.Genre)
                     </td>
                     @if (item.Actors.Any())
@@ -125,17 +205,48 @@ else
     </table>
 }
 
+
 <div class="d-flex justify-content-between mt-3">
     <p>
         <a class="btn btn-success" asp-action="Create">Create New</a>
     </p>
-    <p class="total-price fw-bolder">Total Price: <strong>@ViewData["TotalPrice"]$</strong></p>
+    @if (Model.PageCount > 1)
+    {
+        <ul class="pagination my-pagination justify-content-center">
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                   asp-route-SearchString="@Model.SearchString"
+                   asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="@Model.CurrentSort"
+                   asp-route-Descending="@Model.SortDescending" asp-route-pageNumber="@(Model.PageNumber - 1)"
+                   asp-route-pageSize="@Model.PageSize">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                       asp-route-SearchString="@Model.SearchString"
+                       asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="@Model.CurrentSort"
+                       asp-route-Descending="@Model.SortDescending" asp-route-pageNumber="@i"
+                       asp-route-pageSize="@Model.PageSize">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-MovieGenre="@Model.MovieGenre"
+                   asp-route-SearchString="@Model.SearchString"
+                   asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="@Model.CurrentSort"
+                   asp-route-Descending="@Model.SortDescending" asp-route-pageNumber="@(Model.PageNumber + 1)"
+                   asp-route-pageSize="@Model.PageSize">Next</a>
+            </li>
+        </ul>
+    }
     <p>
         <a class="btn btn-info" asp-action="Export" asp-route-MovieGenre="@Model.MovieGenre"
            asp-route-SearchString="@Model.SearchString"
-           asp-route-FavoritesOnly="@Model.FavoritesOnly">Export To Excel</a>
-    </p>
+           asp-route-FavoritesOnly="@Model.FavoritesOnly" asp-route-SortBy="@Model.CurrentSort" asp-route-Descending="@Model.SortDescending">Export To Excel</a>
+    </p> 
 </div>
+<p class="total-price fw-bolder text-center">Total Price: <strong>@ViewData["TotalPrice"]$</strong></p>
+
 @Html.AntiForgeryToken()
 <script>
     function toggleStar(itemId) {

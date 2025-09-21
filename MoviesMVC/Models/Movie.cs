@@ -32,6 +32,7 @@ public class Movie
     public string? Rating { get; set; }
     public bool Favorited { get; set; }
 
+    [Display(Name = "IMDb Rating")]
     public double? ImdbRating { get; set; }
     public List<string> Actors { get; set; } = new();
 }

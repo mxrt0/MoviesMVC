@@ -84,10 +84,15 @@ a img {
 }
 
 .background {
-    position: relative;
     z-index: 1;
     min-height: 100vh;
     margin: 0;
+    height: 100vh;
+    position: fixed;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .background::before {
@@ -220,7 +225,10 @@ a img {
     color: white;
     font-size: large;
     padding: 5px;
-    background-color: rgba(0,0,0,0.55)
+    background-color: rgba(0,0,0,0.6);
+    text-align: center;
+    width: 22%;
+    margin-left: 490px;
 }
 
 .table th, .table td {
@@ -284,3 +292,10 @@ td.starring-column {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.sort-a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
