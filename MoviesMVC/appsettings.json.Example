@@ -1,0 +1,13 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "MoviesDbContext": "YOUR_SQL_SERVER_CONNECTION_STRING"
+  },
+  "API_KEY": "YOUR_API_KEY"
+}
